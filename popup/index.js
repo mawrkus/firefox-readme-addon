@@ -32,7 +32,7 @@ function renderLink(item) {
             <small>${new Date(createdOn).toUTCString()}</small>
           </p>
           <p>
-          <small>🔗</small> <a href="${link.url}" target="_blank" title="Visit ${link.url}">${link.text}</a>
+          <small>🔗</small> <a href="${link.url}" target="_blank" title="${link.url}">${link.text}</a>
           <br />
           </p>
         </div>
@@ -58,7 +58,7 @@ function renderImage(item) {
             <br>
             <small>${new Date(createdOn).toUTCString()}</small>
           </p>
-          <a href="${media.src}" target="_blank" title="View ${media.src}">
+          <a href="${media.src}" target="_blank" title="${media.src}">
             <figure class="image">
               <img src="${media.src}" />
             </figure>

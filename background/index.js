@@ -4,21 +4,21 @@ function init() {
 
   createMenu({
     id: 'readme-add-link',
-    title: 'Add link',
+    title: browser.i18n.getMessage('saveLink'),
     contexts: [
       'link',
     ],
   });
   createMenu({
     id: 'readme-add-image',
-    title: 'Add image',
+    title: browser.i18n.getMessage('saveImage'),
     contexts: [
       'image',
     ],
   });
   createMenu({
     id: 'readme-add-text',
-    title: 'Add selected text',
+    title: browser.i18n.getMessage('saveText'),
     contexts: [
       'selection',
     ],
