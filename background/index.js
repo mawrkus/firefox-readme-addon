@@ -8,38 +8,30 @@ function init() {
     contexts: [
       'link',
     ],
+    onclick(info, tab) {
+      addItem(info, tab, 'link');
+    }
   });
+
   createMenu({
     id: 'readme-add-image',
     title: browser.i18n.getMessage('saveImage'),
     contexts: [
       'image',
     ],
+    onclick(info, tab) {
+      addItem(info, tab, 'image');
+    }
   });
+
   createMenu({
     id: 'readme-add-text',
     title: browser.i18n.getMessage('saveText'),
     contexts: [
       'selection',
     ],
-  });
-
-  browser.menus.onClicked.addListener((info, tab) => {
-    switch (info.menuItemId) {
-      case 'readme-add-link':
-        addItem(info, tab, 'link');
-        break;
-
-      case 'readme-add-image':
-        addItem(info, tab, 'image');
-        break;
-
-      case 'readme-add-text':
-        addItem(info, tab, 'text');
-        break;
-
-      default:
-        break;
+    onclick(info, tab) {
+      addItem(info, tab, 'text');
     }
   });
 }
