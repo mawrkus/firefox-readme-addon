@@ -32,7 +32,7 @@ function renderItem(item) {
         <p class="image is-64x64">
           ${
             media.src
-              ? `<a href="${itemUrl}" target="_blank" title="View image"><img src="${media.src}"></a>`
+              ? `<a href="${itemUrl}" target="_blank"><img src="${media.src}"></a>`
               : '<img src="https://bulma.io/images/placeholders/128x128.png">'
           }
         </p>

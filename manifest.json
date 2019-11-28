@@ -22,14 +22,6 @@
     "tabs"
   ],
 
-  "commands": {
-    "_execute_sidebar_action": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+E"
-      }
-    }
-  },
-
   "browser_action": {
     "default_icon": "icons/readme.svg",
     "default_title": "Readme!",
@@ -40,6 +32,14 @@
     "default_icon": "icons/readme.svg",
     "default_title": "Readme!",
     "default_panel": "popup/index.html"
+  },
+
+  "commands": {
+    "_execute_sidebar_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+E"
+      }
+    }
   },
 
   "background": {
