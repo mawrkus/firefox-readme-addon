@@ -36,12 +36,17 @@ function onSaveSuccess(item) {
 
   browser.runtime.sendMessage(item);
 
-  browser.notifications.create({
-    type: 'basic',
-    title: 'Readme!',
-    message: '👌🏾 Added new item to your reading list!',
-    iconUrl: browser.extension.getURL('icons/readme-48.png'),
-  });
+  browser.sidebarAction.isOpen({})
+    .then((isOpen) => {
+      if (!isOpen) {
+        browser.notifications.create({
+          type: 'basic',
+          title: 'Readme!',
+          message: '👌🏾 Added new item to your reading list!',
+          iconUrl: browser.extension.getURL('icons/readme-48.png'),
+        });
+      }
+    });
 }
 
 function onSaveError(error, item) {
