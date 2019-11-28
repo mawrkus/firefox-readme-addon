@@ -1,0 +1,12 @@
+{
+  "name": "readme-add-on",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "web-ext run"
+  },
+  "devDependencies": {
+    "web-ext": "^3.2.1"
+  }
+}

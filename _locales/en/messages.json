@@ -1,0 +1,6 @@
+{
+  "addToReadingList": {
+    "message": "Read this later!",
+    "description": "Title of context menu item that adds the item to the reading list when clicked."
+  }
+}

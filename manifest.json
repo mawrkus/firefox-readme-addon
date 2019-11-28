@@ -1,0 +1,52 @@
+{
+  "manifest_version": 2,
+  "name": "Readme!",
+  "version": "1.0",
+  "description": "Reading list in the browser.",
+  "author": "mawrkus <web@sparring-partner.be>",
+
+  "default_locale": "en",
+
+  "icons": {
+    "16": "icons/readme.svg",
+    "32": "icons/readme.svg",
+    "48": "icons/readme.svg",
+    "96": "icons/readme.svg"
+  },
+
+  "permissions": [
+    "activeTab",
+    "menus",
+    "notifications",
+    "storage",
+    "tabs"
+  ],
+
+  "commands": {
+    "_execute_sidebar_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+E"
+      }
+    }
+  },
+
+  "browser_action": {
+    "default_icon": "icons/readme.svg",
+    "default_title": "Readme!",
+    "default_popup": "popup/index.html"
+  },
+
+  "sidebar_action": {
+    "default_icon": "icons/readme.svg",
+    "default_title": "Readme!",
+    "default_panel": "popup/index.html"
+  },
+
+  "background": {
+    "scripts": [
+      "background/menus.js",
+      "background/items.js",
+      "background/index.js"
+    ]
+  }
+}
