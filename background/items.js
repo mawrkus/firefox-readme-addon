@@ -42,8 +42,8 @@ function onSaveSuccess(item) {
         browser.notifications.create({
           type: 'basic',
           title: 'Readme!',
-          message: '👌🏾 Added new item to your reading list!',
-          iconUrl: browser.extension.getURL('icons/readme-48.png'),
+          message: `Added new ${item.type} to your reading list!`,
+          iconUrl: browser.extension.getURL('icons/readme-96.png'),
         });
       }
     });
@@ -56,7 +56,7 @@ function onSaveError(error, item) {
   browser.notifications.create({
     type: 'basic',
     title: 'Readme!',
-    message: '💥 Error while adding new item to your reading list!',
+    message: `💥 Error while adding new ${item.type}!`,
     iconUrl: browser.extension.getURL('icons/readme-48.png'),
   });
 }
