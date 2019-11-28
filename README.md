@@ -1,5 +1,9 @@
 # 🦊 Developing a Firefox add-on
 
+## TODOs
+
+- Storage should be sync between popup and sidebar
+
 ## Resources
 
 - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension

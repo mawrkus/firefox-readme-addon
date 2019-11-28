@@ -1,14 +1,15 @@
-function buildNewItem(info, tab) {
+function buildNewItem(info, tab, type) {
   const { title, url } = tab;
   const {
     linkText,
     linkUrl,
-    selectionText,
     mediaType,
     srcUrl,
+    selectionText,
   } = info;
 
   const item = {
+    type,
     page: {
       title,
       url,
@@ -17,12 +18,12 @@ function buildNewItem(info, tab) {
       text: linkText,
       url: linkUrl,
     },
-    selection: {
-      text: selectionText,
-    },
     media: {
       type: mediaType,
       src: srcUrl,
+    },
+    text: {
+      selection: selectionText,
     },
     createdOn: Date.now(),
   };
@@ -31,7 +32,7 @@ function buildNewItem(info, tab) {
 }
 
 function onSaveSuccess(item) {
-  console.info('New item added!', item);
+  console.info('New "%s" added!', item.type, item);
 
   browser.runtime.sendMessage(item);
 
@@ -55,12 +56,12 @@ function onSaveError(error, item) {
   });
 }
 
-function addItem(info, tab) {
-  console.log('Adding new item...');
-  console.log('info ->', info);
+function addItem(info, tab, type) {
+  console.log('Adding new "%s"...', type);
   console.log('tab ->', tab);
+  console.log('info ->', info);
 
-  const item = buildNewItem(info, tab);
+  const item = buildNewItem(info, tab, type);
 
   browser.storage.local.get()
     .then((data) => browser.storage.local.set({
@@ -69,3 +70,7 @@ function addItem(info, tab) {
     .then(() => onSaveSuccess(item))
     .catch((e) => onSaveError(e, item));
 }
+
+browser.notifications.onClicked.addListener((notificationId) => {
+  browser.notifications.clear(notificationId);
+});

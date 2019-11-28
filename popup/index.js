@@ -18,25 +18,91 @@ function onClickDelete(event, createdOn) {
     .then(renderItems);
 }
 
-function getItemUrl({ link, media }) {
-  return link.url || media.src;
+function renderLink(item) {
+  const { page, link, createdOn } = item;
+  return `
+    <article class="media mb-s">
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <a href="${page.url}" target="_blank" class="has-text-dark" title="Visit page">
+              <strong>${page.title}</strong>
+            </a>
+            <br />
+            <small>${new Date(createdOn).toUTCString()}</small>
+          </p>
+          <p>
+          🔗  <a href="${link.url}" target="_blank" title="Visit link">${link.text}</a>
+          <br />
+          <small class="has-text-dark">${link.url}</small>
+          </p>
+        </div>
+      </div>
+      <div class="media-right">
+        <button class="delete js-delete"></button>
+      </div>
+    </article>
+    <div class="is-divider"></div>
+  `;
 }
 
-function renderItem(item) {
-  const { page, link, selection, media, createdOn } = item;
-  const itemUrl = getItemUrl(item);
+function renderImage(item) {
+  const { page, media, createdOn } = item;
+  return `
+    <article class="media mb-s">
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <a href="${page.url}" target="_blank" class="has-text-dark" title="Visit page">
+              <strong>${page.title}</strong>
+            </a>
+            <br>
+            <small>${new Date(createdOn).toUTCString()}</small>
+          </p>
+          <a href="${media.src}" target="_blank" title="View media">
+            <figure class="image">
+              <img src="${media.src}" />
+            </figure>
+          </a>
+        </div>
+      </div>
+      <div class="media-right">
+        <button class="delete js-delete"></button>
+      </div>
+    </article>
+    <div class="is-divider"></div>
+  `;
+}
+
+function renderText(item) {
+  const { page, text, createdOn } = item;
+  return `
+    <article class="media mb-s">
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <a href="${page.url}" target="_blank" class="has-text-dark" title="Visit page">
+              <strong>${page.title}</strong>
+            </a>
+            <br>
+            <small>${new Date(createdOn).toUTCString()}</small>
+          </p>
+          <blockquote>${text.selection}</blockquote>
+        </div>
+      </div>
+      <div class="media-right">
+        <button class="delete js-delete"></button>
+      </div>
+    </article>
+    <div class="is-divider"></div>
+  `;
+}
+
+function renderUnknownItemType(item) {
+  const { page, createdOn } = item;
 
   return `
     <article class="media mb-s">
-      <figure class="media-left">
-        <p class="image is-64x64">
-          ${
-            media.src
-              ? `<a href="${itemUrl}" target="_blank"><img src="${media.src}"></a>`
-              : '<img src="https://bulma.io/images/placeholders/128x128.png">'
-          }
-        </p>
-      </figure>
       <div class="media-content">
         <div class="content">
           <p>
@@ -46,11 +112,7 @@ function renderItem(item) {
             <br>
             <small>${new Date(createdOn).toUTCString()}</small>
             <br>
-            ${
-              itemUrl
-                ? `<a href="${itemUrl}" target="_blank" title="Visit link">${link.text || selection.text || itemUrl}</a>`
-                : `<blockquote>${link.text || selection.text}</blockquote>`
-            }
+            <code>${JSON.stringify(item)}</code>
           </p>
         </div>
       </div>
@@ -58,7 +120,24 @@ function renderItem(item) {
         <button class="delete js-delete"></button>
       </div>
     </article>
+    <div class="is-divider"></div>
   `;
+}
+
+function renderItem(item) {
+  const { type } = item;
+
+  if (type === 'link') {
+    return renderLink(item);
+  }
+  if (type === 'image') {
+    return renderImage(item);
+  }
+  if (type === 'text') {
+    return renderText(item);
+  }
+
+  return renderUnknownItemType(item);
 }
 
 function sortItems(items) {
