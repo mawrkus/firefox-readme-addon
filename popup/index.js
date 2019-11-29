@@ -18,22 +18,29 @@ function onClickDelete(event, createdOn) {
     .then(renderItems);
 }
 
+function renderTitles(item, title) {
+  const { page, createdOn } = item;
+  return `
+    <h1 class="title is-5 mb-xs">
+      <a href="${page.url}" target="_blank" class="has-text-dark" title="Visit page">
+        <strong>${page.title}</strong>
+      </a>
+    </h1>
+    <p>
+      <small>${new Date(createdOn).toUTCString()}</small>
+    </p>
+  `;
+}
+
 function renderLink(item) {
   const { page, link, createdOn } = item;
   return `
     <article class="media mb-s">
       <div class="media-content">
         <div class="content">
+          ${renderTitles(item)}
           <p>
-            <a href="${page.url}" target="_blank" class="has-text-dark" title="Visit page">
-              <strong>${page.title}</strong>
-            </a>
-            <br />
-            <small>${new Date(createdOn).toUTCString()}</small>
-          </p>
-          <p>
-          <small>🔗</small> <a href="${link.url}" target="_blank" title="${link.url}">${link.text}</a>
-          <br />
+            <small>🔗</small> <a href="${link.url}" target="_blank" title="${link.url}">${link.text}</a>
           </p>
         </div>
       </div>
@@ -51,13 +58,7 @@ function renderImage(item) {
     <article class="media mb-s">
       <div class="media-content">
         <div class="content">
-          <p>
-            <a href="${page.url}" target="_blank" class="has-text-dark" title="Visit page">
-              <strong>${page.title}</strong>
-            </a>
-            <br>
-            <small>${new Date(createdOn).toUTCString()}</small>
-          </p>
+          ${renderTitles(item)}
           <a href="${media.src}" target="_blank" title="${media.src}">
             <figure class="image">
               <img src="${media.src}" />
@@ -79,13 +80,7 @@ function renderText(item) {
     <article class="media mb-s">
       <div class="media-content">
         <div class="content">
-          <p>
-            <a href="${page.url}" target="_blank" class="has-text-dark" title="Visit page">
-              <strong>${page.title}</strong>
-            </a>
-            <br>
-            <small>${new Date(createdOn).toUTCString()}</small>
-          </p>
+          ${renderTitles(item)}
           <blockquote title="Quote from ${page.url}">${text.selection}</blockquote>
         </div>
       </div>

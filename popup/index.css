@@ -18,5 +18,9 @@
 }
 
 .mb-s {
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.7rem !important;
+}
+
+.mb-xs {
+  margin-bottom: 0.2rem !important;
 }
