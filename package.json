@@ -1,7 +1,8 @@
 {
-  "name": "readme-add-on",
+  "name": "readme-firefox-add-on",
   "version": "1.0.0",
   "main": "index.js",
+  "author": "mawrkus <web@sparring-partner.be>",
   "license": "MIT",
   "scripts": {
     "dev": "web-ext run"
