@@ -137,7 +137,7 @@ class ItemsManager {
     console.log('Adding all page "%s"s...', type);
     console.log('tab ->', tab);
 
-    this.executeScriptInTab(tab, type)
+   return  this.executeScriptInTab(tab, type)
       .then(([pageItems]) => {
         const items = pageItems.map((item) => ItemsManager.buildNewItem(item, tab, type));
 

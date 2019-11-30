@@ -10,7 +10,12 @@ function createMenu(menu) {
   browser.menus.create(menu, onMenuCreated(menu.id));
 }
 
-function createMenus(itemsManager) {
+function updateClearAllState({ items }) {
+  const itemsCount = Object.keys(items.newValue).length;
+  browser.menus.update('readme-clear-all', { enabled: itemsCount > 0 });
+}
+
+function createMenus(itemsManager, itemsCount) {
   createMenu({
     id: 'readme-add-link',
     title: browser.i18n.getMessage('addLink'),
@@ -77,6 +82,7 @@ function createMenus(itemsManager) {
   createMenu({
     id: 'readme-clear-all',
     title: browser.i18n.getMessage('clearAll'),
+    enabled: itemsCount > 0,
     contexts: [
       'all',
     ],
@@ -84,19 +90,25 @@ function createMenus(itemsManager) {
       itemsManager.clearItems();
     },
   });
+
+  browser.storage.onChanged.addListener(updateClearAllState);
 }
 
 console.log('Initializing background script...');
 
-browser.storage.local.get().then((data) => {
-  console.log('Storage', data);
-  if (!data.items) {
-    data.items = {};
-    data.lastId = 0;
-    return browser.storage.local.set(data);
-  }
-});
+browser.storage.local.get()
+  .then((data) => {
+    console.log('Storage', data);
 
-const itemsManager = new ItemsManager();
+    if (!data.items) {
+      data.items = {};
+      data.lastId = 0;
+      return browser.storage.local.set(data).then(() => data);
+    }
 
-createMenus(itemsManager);
+    return data;
+  })
+  .then((data) => {
+    const itemsManager = new ItemsManager();
+    createMenus(itemsManager, Object.keys(data.items).length);
+  });
