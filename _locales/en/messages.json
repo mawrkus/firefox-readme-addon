@@ -1,0 +1,20 @@
+{
+  "addLink": {
+    "message": "🔗 Add link"
+  },
+  "addImage": {
+    "message": "🦊 Add image"
+  },
+  "addText": {
+    "message": "📋 Add selected text"
+  },
+  "addAllLinks": {
+    "message": "🔗 Add all page links"
+  },
+  "addAllImages": {
+    "message": "🦊 Add all page images"
+  },
+  "clearAll": {
+    "message": "💥 Clear all!"
+  }
+}

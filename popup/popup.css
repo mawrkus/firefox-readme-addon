@@ -1,0 +1,45 @@
+.container {
+  padding: 0.5rem 0.7rem;
+}
+
+.media .media {
+  border-top: 0;
+}
+
+.image img {
+  padding: 0;
+  margin: 0;
+}
+
+.is-divider {
+  display: block;
+  position: relative;
+  border-top: .1rem solid
+  #dbdbdb;
+  height: .1rem;
+  margin: 0.7rem 0;
+  text-align: center;
+}
+
+.mb-s {
+  margin-bottom: 0.7rem !important;
+}
+.mb-xs {
+  margin-bottom: 0.2rem !important;
+}
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+.ml-xs {
+  margin-left: 0.2rem !important;
+}
+
+h1.page-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.2rem;
+}
+
+figure.page-icon {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
