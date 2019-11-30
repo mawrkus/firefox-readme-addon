@@ -10,7 +10,7 @@ function createMenu(menu) {
   browser.menus.create(menu, onMenuCreated(menu.id));
 }
 
-function createMenus() {
+function createMenus(itemsManager) {
   createMenu({
     id: 'readme-add-link',
     title: browser.i18n.getMessage('addLink'),
@@ -18,7 +18,7 @@ function createMenus() {
       'link',
     ],
     onclick(info, tab) {
-      addItem(info, tab, 'link');
+      itemsManager.addItem(info, tab, 'link');
     },
   });
 
@@ -29,7 +29,7 @@ function createMenus() {
       'image',
     ],
     onclick(info, tab) {
-      addItem(info, tab, 'image');
+      itemsManager.addItem(info, tab, 'image');
     },
   });
 
@@ -40,7 +40,7 @@ function createMenus() {
       'selection',
     ],
     onclick(info, tab) {
-      addItem(info, tab, 'text');
+      itemsManager.addItem(info, tab, 'text');
     },
   });
 
@@ -51,7 +51,7 @@ function createMenus() {
       'page',
     ],
     onclick(info, tab) {
-      addAllPageItems(tab, 'link');
+      itemsManager.addAllPageItems(tab, 'link');
     },
   });
 
@@ -62,7 +62,7 @@ function createMenus() {
       'page',
     ],
     onclick(info, tab) {
-      addAllPageItems(tab, 'image');
+      itemsManager.addAllPageItems(tab, 'image');
     },
   });
 
@@ -81,7 +81,7 @@ function createMenus() {
       'all',
     ],
     onclick() {
-      clearAllItems();
+      itemsManager.clearItems();
     },
   });
 }
@@ -97,4 +97,6 @@ browser.storage.local.get().then((data) => {
   }
 });
 
-createMenus();
+const itemsManager = new ItemsManager();
+
+createMenus(itemsManager);
