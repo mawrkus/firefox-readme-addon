@@ -43,6 +43,17 @@ function createMenus() {
       addItem(info, tab, 'text');
     }
   });
+
+  createMenu({
+    id: 'readme-sep-1',
+    title: browser.i18n.getMessage('addAllLinks'),
+    contexts: [
+      'page',
+    ],
+    onclick(info, tab) {
+      addAllPageItems(info, tab, 'links');
+    }
+  });
 }
 
 console.log('Initializing background script...');

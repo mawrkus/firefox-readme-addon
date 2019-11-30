@@ -1,26 +1,19 @@
-function renderTitles(item, title) {
+function renderItemHeader(item, title) {
   const { page, createdOn } = item;
   return `
-    <h1 class="title is-5 mb-xs">
-      <a href="${page.url}" target="_blank" class="has-text-dark" title="Visit page">
-        <strong>${page.title}</strong>
-      </a>
-    </h1>
-    <p>
-      <small>${new Date(createdOn).toUTCString()}</small>
-    </p>
-  `;
-}
-
-function renderLink(item) {
-  const { page, link, createdOn } = item;
-  return `
-    <article class="media mb-s">
+    <article class="media">
+      <figure class="media-left page-icon">
+        <p class="image is-24x24">
+          <img src="${page.iconUrl}" />
+        </p>
+      </figure>
       <div class="media-content">
         <div class="content">
-          ${renderTitles(item)}
-          <p>
-            <small>🔗</small> <a href="${link.url}" target="_blank" title="${link.url}">${link.text}</a>
+          <a href="${page.url}" target="_blank" class="has-text-dark" title="Visit page">
+            <h1 class="page-title">${page.title}</h1>
+          </a>
+          <p class="mb-s">
+            <small>${new Date(createdOn).toUTCString()}</small>
           </p>
         </div>
       </div>
@@ -28,47 +21,46 @@ function renderLink(item) {
         <button class="delete js-delete"></button>
       </div>
     </article>
-    <div class="is-divider"></div>
+  `;
+}
+
+function renderLink(item) {
+  const { page, link, createdOn } = item;
+  return `
+    <div class="container">
+      ${renderItemHeader(item)}
+      <div class="content">
+        <a href="${link.url}" target="_blank" title="${link.url}">${link.text}</a>
+      </div>
+    </div>
   `;
 }
 
 function renderImage(item) {
   const { page, media, createdOn } = item;
   return `
-    <article class="media mb-s">
-      <div class="media-content">
-        <div class="content">
-          ${renderTitles(item)}
-          <a href="${media.src}" target="_blank" title="${media.src}">
-            <figure class="image">
-              <img src="${media.src}" />
-            </figure>
-          </a>
-        </div>
+    <div class="container">
+      ${renderItemHeader(item)}
+      <div class="content">
+        <a href="${media.src}" target="_blank" title="${media.src}">
+          <figure class="image">
+            <img src="${media.src}" />
+          </figure>
+        </a>
       </div>
-      <div class="media-right">
-        <button class="delete js-delete"></button>
-      </div>
-    </article>
-    <div class="is-divider"></div>
+    </div>
   `;
 }
 
 function renderText(item) {
   const { page, text, createdOn } = item;
   return `
-    <article class="media mb-s">
-      <div class="media-content">
-        <div class="content">
-          ${renderTitles(item)}
-          <blockquote title="Quote from ${page.url}">${text.selection}</blockquote>
-        </div>
+    <div class="container">
+      ${renderItemHeader(item)}
+      <div class="content">
+        <blockquote title="Quote from ${page.url}">${text.selection}</blockquote>
       </div>
-      <div class="media-right">
-        <button class="delete js-delete"></button>
-      </div>
-    </article>
-    <div class="is-divider"></div>
+    </div>
   `;
 }
 
@@ -76,25 +68,12 @@ function renderUnknownItemType(item) {
   const { page, createdOn } = item;
 
   return `
-    <article class="media mb-s">
-      <div class="media-content">
-        <div class="content">
-          <p>
-            <a href="${page.url}" target="_blank" class="has-text-dark" title="Visit page">
-              <strong>${page.title}</strong>
-            </a>
-            <br>
-            <small>${new Date(createdOn).toUTCString()}</small>
-            <br>
-            <code>${JSON.stringify(item)}</code>
-          </p>
-        </div>
+    <div class="container">
+      ${renderItemHeader(item)}
+      <div class="content">
+        <code>${JSON.stringify(item)}</code>
       </div>
-      <div class="media-right">
-        <button class="delete js-delete"></button>
-      </div>
-    </article>
-    <div class="is-divider"></div>
+    </div>
   `;
 }
 
@@ -149,7 +128,7 @@ function onClickDelete(event, item) {
 function createItemElement(item) {
   const itemElement = document.createElement('li');
   itemElement.setAttribute('class', 'item');
-  itemElement.innerHTML = renderItem(item);
+  itemElement.innerHTML = `${renderItem(item)}<div class="is-divider" />`;
   itemElement.onclick = (e) => onClickDelete(e, item);
   return itemElement;
 }

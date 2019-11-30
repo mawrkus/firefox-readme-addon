@@ -1,5 +1,9 @@
 function buildNewItem(info, tab, type) {
-  const { title, url } = tab;
+  const {
+    title,
+    url,
+    favIconUrl,
+  } = tab;
   const {
     linkText,
     linkUrl,
@@ -13,6 +17,7 @@ function buildNewItem(info, tab, type) {
     page: {
       title,
       url,
+      iconUrl: favIconUrl,
     },
     link: {
       text: linkText,
@@ -81,6 +86,12 @@ function addItem(info, tab, type) {
     })
   .then(() => onStoreSuccess(item))
   .catch((e) => onStoreError(e, item));
+}
+
+function addAllPageItems(info, tab, type) {
+  console.log('__________________________________________________________________________________');
+  console.log(info, tab);
+  console.log('__________________________________________________________________________________');
 }
 
 browser.notifications.onClicked.addListener((notificationId) => {

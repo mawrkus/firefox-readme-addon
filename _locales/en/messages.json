@@ -10,5 +10,9 @@
   "addText": {
     "message": "Add selected text",
     "description": "Title of context menu item that adds the item to the reading list when clicked."
+  },
+  "addAllLinks": {
+    "message": "Add all page links",
+    "description": "Title of context menu item that adds the item to the reading list when clicked."
   }
 }
