@@ -29,8 +29,8 @@ function renderLink(item) {
   return `
     <div class="container">
       ${renderItemHeader(item)}
-      <div class="content">
-        <a href="${link.url}" target="_blank" title="${link.url}">${link.text}</a>
+      <div class="content ml-xs">
+        <a href="${link.url}" target="_blank" title="${link.url}">${link.text || link.url}</a>
       </div>
     </div>
   `;
@@ -41,7 +41,7 @@ function renderImage(item) {
   return `
     <div class="container">
       ${renderItemHeader(item)}
-      <div class="content">
+      <div class="content ml-xs">
         <a href="${media.src}" target="_blank" title="${media.src}">
           <figure class="image">
             <img src="${media.src}" />
@@ -57,7 +57,7 @@ function renderText(item) {
   return `
     <div class="container">
       ${renderItemHeader(item)}
-      <div class="content">
+      <div class="content ml-xs">
         <blockquote title="Quote from ${page.url}">${text.selection}</blockquote>
       </div>
     </div>
@@ -70,7 +70,7 @@ function renderUnknownItemType(item) {
   return `
     <div class="container">
       ${renderItemHeader(item)}
-      <div class="content">
+      <div class="content ml-xs">
         <code>${JSON.stringify(item)}</code>
       </div>
     </div>
@@ -110,10 +110,7 @@ function onClickDelete(event, item) {
   browser.storage.local.get()
     .then((data) => {
       delete data.items[item.id];
-      return browser.storage.local.set(data).then((isCleared) => {
-        console.log('Storage cleared?', isCleared, data);
-        return data;
-      });
+      return browser.storage.local.set(data).then(() => data);
     })
     .then((data) => {
       const itemElement = deleteElement.closest('.item');
@@ -162,13 +159,32 @@ const list = {
   prependItem(item) {
     this.listElement.prepend(createItemElement(item));
     this.msgElement.classList.add('is-hidden');
+  },
+
+  prependAllItems(items) {
+    items.forEach((item) => this.prependItem(item));
   }
 };
 
 browser.storage.local.get().then((data) => {
   list.render(data);
 
-  browser.runtime.onMessage.addListener(({ item }) => {
-    list.prependItem(item);
+  browser.runtime.onMessage.addListener((msg) => {
+    switch (msg.action) {
+      case 'add-item':
+        list.prependItem(msg.item);
+        break;
+
+      case 'clear-all-items':
+        list.render();
+        break;
+
+      case 'add-all-items':
+        list.prependAllItems(msg.items);
+        break;
+
+      default:
+        console.warn('Unknown action type "%s"!', msg.type);
+    }
   });
 });

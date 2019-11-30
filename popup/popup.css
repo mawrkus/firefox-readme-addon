@@ -24,13 +24,14 @@
 .mb-s {
   margin-bottom: 0.7rem !important;
 }
-
 .mb-xs {
   margin-bottom: 0.2rem !important;
 }
-
 .mb-0 {
   margin-bottom: 0 !important;
+}
+.ml-xs {
+  margin-left: 0.2rem !important;
 }
 
 h1.page-title {

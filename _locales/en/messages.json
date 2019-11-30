@@ -1,18 +1,17 @@
 {
   "addLink": {
-    "message": "Add link",
-    "description": "Title of context menu item that adds the item to the reading list when clicked."
+    "message": "🔗 Add link"
   },
   "addImage": {
-    "message": "Add image",
-    "description": "Title of context menu item that adds the item to the reading list when clicked."
+    "message": "🦊 Add image"
   },
   "addText": {
-    "message": "Add selected text",
-    "description": "Title of context menu item that adds the item to the reading list when clicked."
+    "message": "📋 Add selected text"
   },
   "addAllLinks": {
-    "message": "Add all page links",
-    "description": "Title of context menu item that adds the item to the reading list when clicked."
+    "message": "🔗 Add all page links"
+  },
+  "clearAll": {
+    "message": "💥 Clear all!"
   }
 }

@@ -19,7 +19,7 @@ function createMenus() {
     ],
     onclick(info, tab) {
       addItem(info, tab, 'link');
-    }
+    },
   });
 
   createMenu({
@@ -30,7 +30,7 @@ function createMenus() {
     ],
     onclick(info, tab) {
       addItem(info, tab, 'image');
-    }
+    },
   });
 
   createMenu({
@@ -41,18 +41,37 @@ function createMenus() {
     ],
     onclick(info, tab) {
       addItem(info, tab, 'text');
-    }
+    },
   });
 
   createMenu({
-    id: 'readme-sep-1',
+    id: 'readme-add-all-links',
     title: browser.i18n.getMessage('addAllLinks'),
     contexts: [
       'page',
     ],
     onclick(info, tab) {
-      addAllPageItems(info, tab, 'links');
-    }
+      addAllPageItems(tab, 'link');
+    },
+  });
+
+  createMenu({
+    id: 'readme-sep1',
+    type: 'separator',
+    contexts: [
+      'all',
+    ],
+  });
+
+  createMenu({
+    id: 'readme-clear-all',
+    title: browser.i18n.getMessage('clearAll'),
+    contexts: [
+      'all',
+    ],
+    onclick() {
+      clearAllItems();
+    },
   });
 }
 
