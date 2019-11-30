@@ -1,4 +1,4 @@
-# 🦊 Readme! Firefox add-on
+# 🦊 Readme! A Firefox add-on
 
 A firefox add-on that let you extract text, links or images from any page for later reading.
 
@@ -6,13 +6,15 @@ A firefox add-on that let you extract text, links or images from any page for la
 
 Firefox > 52 (for proper `storage.local.get()` support).
 
+## Usage
+
+Soon ;)
+
 ## Resources
 
-- https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension
-- https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_second_WebExtension
-- https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions
-
-- https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/
+- [Guide for your first extension (MDN)](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension)
+- [MDN Browser Extensions documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions)
+- [web-ext: command line tool to speed up various parts of the extension development process](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/)
 
 ## TODOs
 
