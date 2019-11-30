@@ -1,23 +1,3 @@
-function onClickDelete(event, createdOn) {
-  if (!event.target.classList.contains('js-delete')) {
-    return;
-  }
-
-  event.preventDefault();
-
-  browser.storage.local.get()
-    .then((data) => {
-      const updatedData = {
-        ...data,
-        items: data.items.filter((i) => i.createdOn !== createdOn),
-      };
-
-      return browser.storage.local.set(updatedData)
-        .then(() => updatedData);
-    })
-    .then(renderItems);
-}
-
 function renderTitles(item, title) {
   const { page, createdOn } = item;
   return `
@@ -135,25 +115,81 @@ function renderItem(item) {
 }
 
 function sortItems(items) {
-  return items.sort((a, b) => b.createdOn - a.createdOn);
+  return items.sort((i1, i2) => i2.createdOn - i1.createdOn);
 }
 
-function renderItems({ items }) {
-  const listElement = document.getElementById('reading-list');
-  listElement.innerHTML = '';
+function onClickDelete(event, item) {
+  const deleteElement = event.target;
+  if (!deleteElement.classList.contains('js-delete')) {
+    return;
+  }
 
-  sortItems(items).forEach((item) => {
-    const itemElement = document.createElement('li');
-    itemElement.innerHTML = renderItem(item);
-    listElement.appendChild(itemElement);
-    itemElement.onclick = (e) => onClickDelete(e, item.createdOn);
-  });
-}
+  console.log('Removing item...', item);
 
-browser.storage.local.get()
-  .then(renderItems);
+  event.preventDefault();
 
-browser.runtime.onMessage.addListener((item) => {
   browser.storage.local.get()
-    .then(renderItems);
+    .then((data) => {
+      delete data.items[item.id];
+      return browser.storage.local.set(data).then((isCleared) => {
+        console.log('Storage cleared?', isCleared, data);
+        return data;
+      });
+    })
+    .then((data) => {
+      const itemElement = deleteElement.closest('.item');
+      itemElement.parentNode.removeChild(itemElement);
+
+      if (!Object.keys(data.items).length) {
+        document.getElementById('msg').classList.remove('is-hidden');
+      }
+    });
+}
+
+function createItemElement(item) {
+  const itemElement = document.createElement('li');
+  itemElement.setAttribute('class', 'item');
+  itemElement.innerHTML = renderItem(item);
+  itemElement.onclick = (e) => onClickDelete(e, item);
+  return itemElement;
+}
+
+console.log('Initializing popup script...');
+
+const list = {
+  listElement: document.getElementById('reading-list'),
+  msgElement: document.getElementById('msg'),
+
+  render(data = { items: [] }) {
+    console.log('Rendering list...', data);
+    const items = Object.values(data.items);
+    const hasItems = items.length > 0;
+
+    this.msgElement.classList.toggle('is-hidden', hasItems);
+    this.listElement.innerHTML = '';
+
+    if (hasItems) {
+      this.renderItems(items);
+    }
+  },
+
+  renderItems(items) {
+    sortItems(items).forEach((item) => {
+      const itemElement = createItemElement(item);
+      this.listElement.appendChild(itemElement);
+    });
+  },
+
+  prependItem(item) {
+    this.listElement.prepend(createItemElement(item));
+    this.msgElement.classList.add('is-hidden');
+  }
+};
+
+browser.storage.local.get().then((data) => {
+  list.render(data);
+
+  browser.runtime.onMessage.addListener(({ item }) => {
+    list.prependItem(item);
+  });
 });

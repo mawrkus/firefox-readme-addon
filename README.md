@@ -1,5 +1,9 @@
 # 🦊 Developing a Firefox add-on
 
+## Requirements
+
+Firefox > 52 (proper storage.local.get() support)
+
 ## TODOs
 
 - Storage should be sync between popup and sidebar

@@ -1,14 +1,14 @@
 {
-  "saveLink": {
-    "message": "Save link",
+  "addLink": {
+    "message": "Add link",
     "description": "Title of context menu item that adds the item to the reading list when clicked."
   },
-  "saveImage": {
-    "message": "Save image",
+  "addImage": {
+    "message": "Add image",
     "description": "Title of context menu item that adds the item to the reading list when clicked."
   },
-  "saveText": {
-    "message": "Save selected text",
+  "addText": {
+    "message": "Add selected text",
     "description": "Title of context menu item that adds the item to the reading list when clicked."
   }
 }

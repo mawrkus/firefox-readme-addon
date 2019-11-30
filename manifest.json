@@ -25,13 +25,13 @@
   "browser_action": {
     "default_icon": "icons/readme.svg",
     "default_title": "Readme!",
-    "default_popup": "popup/index.html"
+    "default_popup": "popup/popup.html"
   },
 
   "sidebar_action": {
     "default_icon": "icons/readme.svg",
     "default_title": "Readme!",
-    "default_panel": "popup/index.html"
+    "default_panel": "popup/popup.html"
   },
 
   "commands": {
@@ -44,9 +44,8 @@
 
   "background": {
     "scripts": [
-      "background/menus.js",
       "background/items.js",
-      "background/index.js"
+      "background/background.js"
     ]
   }
 }

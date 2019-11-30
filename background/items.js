@@ -31,26 +31,28 @@ function buildNewItem(info, tab, type) {
   return item;
 }
 
-function onSaveSuccess(item) {
-  console.info('New "%s" added!', item.type, item);
+function onStoreSuccess(item) {
+  console.info('New "%s" stored!', item.type, item);
 
-  browser.runtime.sendMessage(item);
+  browser.runtime.sendMessage({
+    action: 'add',
+    item,
+  });
 
-  browser.sidebarAction.isOpen({})
-    .then((isOpen) => {
-      if (!isOpen) {
-        browser.notifications.create({
-          type: 'basic',
-          title: 'Readme!',
-          message: `Added new ${item.type} to your reading list!`,
-          iconUrl: browser.extension.getURL('icons/readme-96.png'),
-        });
-      }
-    });
+  browser.sidebarAction.isOpen({}).then((isOpen) => {
+    if (!isOpen) {
+      browser.notifications.create({
+        type: 'basic',
+        title: 'Readme!',
+        message: `Added new ${item.type} to your reading list!`,
+        iconUrl: browser.extension.getURL('icons/readme-96.png'),
+      });
+    }
+  });
 }
 
-function onSaveError(error, item) {
-  console.error('Error adding new item!', item);
+function onStoreError(error, item) {
+  console.error('Error storing new item!', item);
   console.error(error);
 
   browser.notifications.create({
@@ -69,11 +71,16 @@ function addItem(info, tab, type) {
   const item = buildNewItem(info, tab, type);
 
   browser.storage.local.get()
-    .then((data) => browser.storage.local.set({
-      items: [...(data.items || []), item],
-    }))
-    .then(() => onSaveSuccess(item))
-    .catch((e) => onSaveError(e, item));
+  .then(({ lastId, items }) => {
+      item.id = lastId;
+      browser.storage.local.set({
+        items: { ...items, [lastId]: item },
+        lastId: lastId + 1,
+      });
+      return item;
+    })
+  .then(() => onStoreSuccess(item))
+  .catch((e) => onStoreError(e, item));
 }
 
 browser.notifications.onClicked.addListener((notificationId) => {
