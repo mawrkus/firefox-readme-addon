@@ -110,9 +110,9 @@ class ItemsManager {
 
   clearItems() {
     return this.storage.clear()
-      .then(() => this.storage.set({ lastId: 0, items: [] })
-        .then(() => this.onClearSuccess())
-        .catch((e) => this.onClearError(e)));
+      .then(() => this.storage.set({ lastId: 0, items: [] }))
+      .then(() => this.onClearSuccess())
+      .catch((e) => this.onClearError(e));
   }
 
   onClearSuccess(t)  {
@@ -142,10 +142,10 @@ class ItemsManager {
         const items = pageItems.map((item) => ItemsManager.buildNewItem(item, tab, type));
 
         return this.storeAllItems(items)
-          .then(() => this.onStoreAllItemsSuccess(type, items))
-          .catch((e) => this.onStoreAllItemsError(e, type, items));
+          .then(() => this.onStoreAllItemsSuccess(type, items));
+
       })
-      .catch(console.error);
+      .catch((e) => this.onStoreAllItemsError(e, type));
   }
 
   executeScriptInTab(tab, itemType) {
@@ -220,9 +220,9 @@ class ItemsManager {
     });
   }
 
-  onStoreAllItemsError(error, type, items) {
-    console.error('Error storing %d new "%s" items!', items.length, type);
+  onStoreAllItemsError(error, type) {
+    console.error('Error storing all "%s" items!', type);
     console.error(error);
-    this.notifyUser( `💥 Error while adding ${items.length} new ${type}s!`);
+    this.notifyUser( `💥 Error while adding all page ${type}s!`);
   }
 }
