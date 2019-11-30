@@ -1,6 +1,6 @@
 # 🦊 Readme! Firefox add-on
 
-A firefox add-on that saves links/images/texts for later reading.
+A firefox add-on that let you extract text, links or images from any page for later reading.
 
 ## Requirements
 
