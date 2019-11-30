@@ -170,7 +170,7 @@ browser.storage.local.get().then((data) => {
   list.render(data);
 
   browser.runtime.onMessage.addListener((msg) => {
-    switch (msg.action) {
+    switch(msg.action) {
       case 'add-item':
         list.prependItem(msg.item);
         break;
@@ -185,6 +185,7 @@ browser.storage.local.get().then((data) => {
 
       default:
         console.warn('Unknown action type "%s"!', msg.type);
+        break;
     }
   });
 });

@@ -11,6 +11,9 @@
   "addAllLinks": {
     "message": "🔗 Add all page links"
   },
+  "addAllImages": {
+    "message": "🦊 Add all page images"
+  },
   "clearAll": {
     "message": "💥 Clear all!"
   }

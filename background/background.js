@@ -56,6 +56,17 @@ function createMenus() {
   });
 
   createMenu({
+    id: 'readme-add-all-images',
+    title: browser.i18n.getMessage('addAllImages'),
+    contexts: [
+      'page',
+    ],
+    onclick(info, tab) {
+      addAllPageItems(tab, 'image');
+    },
+  });
+
+  createMenu({
     id: 'readme-sep1',
     type: 'separator',
     contexts: [

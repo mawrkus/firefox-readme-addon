@@ -94,7 +94,19 @@ function addItem(info, tab, type) {
     .catch((e) => onStoreError(e, item));
 }
 
-function buildQueryCode(type) {
+function buildQueryImagesCode() {
+  return `
+    (() => {
+      const itemElements = Array.from(document.querySelectorAll(\'img[src]\'));
+      return itemElements.map((el) => ({
+        mediaType: 'image',
+        srcUrl: el.src,
+      }));
+    })();
+  `;
+}
+
+function buildQueryLinksCode() {
   return `
     (() => {
       const itemElements = Array.from(document.querySelectorAll(\'a:not([href$="#"])\'));
@@ -104,6 +116,20 @@ function buildQueryCode(type) {
       }));
     })();
   `;
+}
+
+function buildQueryCode(type) {
+  switch(type) {
+    case 'link':
+      return buildQueryLinksCode();
+
+    case 'image':
+      return buildQueryImagesCode();
+
+    default:
+      console.warn('Unknown query code type "%s"!', type);
+      break;
+  }
 }
 
 function onClearAllSuccess(type, items)  {
@@ -145,7 +171,7 @@ function clearAllItems() {
 }
 
 function onStoreAllSuccess(type, items)  {
-  console.info('%d new "%s" items stored!', items.length, type);
+  console.info('%d new "%s" items stored!', items.length, type, items);
 
   browser.runtime.sendMessage({
     action: 'add-all-items',
