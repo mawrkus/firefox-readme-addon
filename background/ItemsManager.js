@@ -184,7 +184,7 @@ class ItemsManager {
     return `
       (() => {
         const itemElements = Array.from(document.querySelectorAll(\'img[src]\'));
-        return itemElements.map((el) => ({
+        return itemElements.filter((el) => el.src).map((el) => ({
           mediaType: 'image',
           srcUrl: el.src,
         }));

@@ -19,3 +19,6 @@ Soon ;)
 ## TODOs
 
 - Storage should be sync between popup and sidebar
+- Edit link text
+- Reminder
+- Analytics?
