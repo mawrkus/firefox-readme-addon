@@ -22,3 +22,4 @@ Soon ;)
 - Edit link text
 - Reminder
 - Analytics?
+- Save offline?
