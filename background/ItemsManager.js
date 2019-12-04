@@ -116,7 +116,7 @@ class ItemsManager {
 
   clearItems() {
     return this.storage.clear()
-      .then(() => this.storage.set({ items: [], lastId: 0 }))
+      .then(() => this.storage.set({ items: {}, lastId: 0 }))
       .then(() => this.onClearSuccess())
       .catch((e) => this.onClearError(e));
   }
