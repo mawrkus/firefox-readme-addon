@@ -11,7 +11,7 @@ function createMenu(menu) {
 }
 
 function updateClearAllState({ items }) {
-  const itemsCount = Object.keys(items.newValue).length;
+  const itemsCount = items.newValue ? Object.keys(items.newValue).length : 0;
   browser.menus.update('readme-clear-all', { enabled: itemsCount > 0 });
 }
 
@@ -101,8 +101,8 @@ browser.storage.local.get()
     console.log('Storage', data);
 
     if (!data.items) {
-      data.items = {};
-      data.lastId = 0;
+      data.items = {}; // eslint-disable-line no-param-reassign
+      data.lastId = 0; // eslint-disable-line no-param-reassign
       return browser.storage.local.set(data).then(() => data);
     }
 

@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 class ItemsManager {
   constructor() {
     this.storage = browser.storage.local;
@@ -19,7 +20,7 @@ class ItemsManager {
     const item = ItemsManager.buildNewItem(info, tab, type);
 
     return this.storeItem(item)
-      .then(() => this.onStoreItemSuccess(item))
+      .then((newItem) => this.onStoreItemSuccess(newItem))
       .catch((e) => this.onStoreItemError(e, item));
   }
 
@@ -61,15 +62,19 @@ class ItemsManager {
     return item;
   }
 
-  storeItem(newItem) {
+  storeItem(item) {
     return this.storage.get()
       .then(({ lastId, items }) => {
-        newItem.id = lastId;
+        const newItem = {
+          ...item,
+          id: lastId,
+        };
 
         return this.storage.set({
-          items: { ...items, [newItem.id]: newItem },
-          lastId: newItem.id + 1,
-        });
+          items: { ...items, [lastId]: newItem },
+          lastId: lastId + 1,
+        })
+          .then(() => newItem);
       });
   }
 
@@ -105,17 +110,18 @@ class ItemsManager {
   onStoreItemError(error, item) {
     console.error('Error storing new item!', item);
     console.error(error);
+
     this.notifyUser(`💥 Error while adding new ${item.type}!`);
   }
 
   clearItems() {
     return this.storage.clear()
-      .then(() => this.storage.set({ lastId: 0, items: [] }))
+      .then(() => this.storage.set({ items: [], lastId: 0 }))
       .then(() => this.onClearSuccess())
       .catch((e) => this.onClearError(e));
   }
 
-  onClearSuccess(t)  {
+  onClearSuccess() {
     console.info('All items cleared!');
 
     this.sendMessage({ action: 'clear-all-items' });
@@ -128,7 +134,7 @@ class ItemsManager {
   }
 
   onClearError(error) {
-    console.error('Error clearing all items!',);
+    console.error('Error clearing all items!');
     console.error(error);
     this.notifyUser('💥 Error while clearing your reading list!');
   }
@@ -137,14 +143,12 @@ class ItemsManager {
     console.log('Adding all page "%s"s...', type);
     console.log('tab ->', tab);
 
-   return  this.executeScriptInTab(tab, type)
+    return this.executeScriptInTab(tab, type)
       .then(([pageItems]) => {
         const items = pageItems.map((item) => ItemsManager.buildNewItem(item, tab, type));
-
-        return this.storeAllItems(items)
-          .then(() => this.onStoreAllItemsSuccess(type, items));
-
+        return this.storeAllItems(items);
       })
+      .then((newItems) => this.onStoreAllItemsSuccess(type, newItems))
       .catch((e) => this.onStoreAllItemsError(e, type));
   }
 
@@ -155,7 +159,7 @@ class ItemsManager {
   }
 
   static buildQueryCode(type) {
-    switch(type) {
+    switch (type) {
       case 'link':
         return ItemsManager.buildQueryLinksCode();
 
@@ -171,7 +175,7 @@ class ItemsManager {
   static buildQueryLinksCode() {
     return `
       (() => {
-        const itemElements = Array.from(document.querySelectorAll(\'a:not([href$="#"])\'));
+        const itemElements = Array.from(document.querySelectorAll('a:not([href$="#"])'));
         return itemElements.filter((el) => el.href).map((el) => ({
           linkText: el.innerText,
           linkUrl: el.href,
@@ -183,7 +187,7 @@ class ItemsManager {
   static buildQueryImagesCode() {
     return `
       (() => {
-        const itemElements = Array.from(document.querySelectorAll(\'img[src]\'));
+        const itemElements = Array.from(document.querySelectorAll('img[src]'));
         return itemElements.filter((el) => el.src).map((el) => ({
           mediaType: 'image',
           srcUrl: el.src,
@@ -192,24 +196,24 @@ class ItemsManager {
     `;
   }
 
-  storeAllItems(newItems) {
+  storeAllItems(allItems) {
     return this.storage.get()
       .then(({ lastId, items }) => {
-        const allItems = newItems.reduce((acc, newItem, i) => {
-          newItem.id = lastId + i;
-          acc[newItem.id] = newItem;
-          return acc;
-        }, items);
+        const allNewItems = allItems.reduce((acc, newItem, i) => ({
+          ...acc,
+          [lastId + i]: { ...newItem, id: lastId + i },
+        }), items);
 
         return this.storage.set({
-          items: allItems,
-          lastId: lastId + newItems.length,
-        });
+          items: allNewItems,
+          lastId: lastId + allNewItems.length,
+        })
+          .then(() => allNewItems);
       });
   }
 
-  onStoreAllItemsSuccess(type, items)  {
-    console.info('%d new "%s" items stored!', items.length, type, items);
+  onStoreAllItemsSuccess(type, items) {
+    console.info('%d new "%s" items stored!', Object.keys(items).length, type, items);
 
     this.sendMessage({ action: 'add-all-items', items });
 
@@ -223,6 +227,7 @@ class ItemsManager {
   onStoreAllItemsError(error, type) {
     console.error('Error storing all "%s" items!', type);
     console.error(error);
-    this.notifyUser( `💥 Error while adding all page ${type}s!`);
+
+    this.notifyUser(`💥 Error while adding all page ${type}s!`);
   }
 }

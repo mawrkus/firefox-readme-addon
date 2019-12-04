@@ -1,4 +1,4 @@
-function renderItemHeader(item, title) {
+function renderItemHeader(item) {
   const { page, createdOn } = item;
   return `
     <article class="media">
@@ -25,7 +25,7 @@ function renderItemHeader(item, title) {
 }
 
 function renderLink(item) {
-  const { page, link, createdOn } = item;
+  const { link } = item;
   return `
     <div class="container">
       ${renderItemHeader(item)}
@@ -37,7 +37,7 @@ function renderLink(item) {
 }
 
 function renderImage(item) {
-  const { page, media, createdOn } = item;
+  const { media } = item;
   return `
     <div class="container">
       ${renderItemHeader(item)}
@@ -53,7 +53,7 @@ function renderImage(item) {
 }
 
 function renderText(item) {
-  const { page, text, createdOn } = item;
+  const { page, text } = item;
   return `
     <div class="container">
       ${renderItemHeader(item)}
@@ -65,8 +65,6 @@ function renderText(item) {
 }
 
 function renderUnknownItemType(item) {
-  const { page, createdOn } = item;
-
   return `
     <div class="container">
       ${renderItemHeader(item)}
@@ -109,7 +107,7 @@ function onClickDelete(event, item) {
 
   browser.storage.local.get()
     .then((data) => {
-      delete data.items[item.id];
+      delete data.items[item.id]; // eslint-disable-line no-param-reassign
       return browser.storage.local.set(data).then(() => data);
     })
     .then((data) => {
@@ -136,7 +134,7 @@ const list = {
   listElement: document.getElementById('reading-list'),
   msgElement: document.getElementById('msg'),
 
-  render(data = { items: [] }) {
+  render(data = { items: {}, lastId: 0 }) {
     console.log('Rendering list...', data);
     const items = Object.values(data.items);
     const hasItems = items.length > 0;
@@ -162,15 +160,15 @@ const list = {
   },
 
   prependAllItems(items) {
-    items.forEach((item) => this.prependItem(item));
-  }
+    Object.values(items).forEach((item) => this.prependItem(item));
+  },
 };
 
 browser.storage.local.get().then((data) => {
   list.render(data);
 
   browser.runtime.onMessage.addListener((msg) => {
-    switch(msg.action) {
+    switch (msg.action) {
       case 'add-item':
         list.prependItem(msg.item);
         break;
