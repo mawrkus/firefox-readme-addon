@@ -5,18 +5,23 @@
     <link rel="stylesheet" href="bulma-0.8.0.min.css"/>
     <link rel="stylesheet" href="popup.css"/>
   </head>
-  <body>
+  <body class="has-navbar-fixed-top">
     <section>
       <div class="container">
-        <div class="buttons is-centered">
-          <button class="button is-info js-filter" data-type="link" title="Filter links">Links</button>
-          <button class="button is-info js-filter" data-type="image" title="Filter images">Images</button>
-          <button class="button is-info js-filter" data-type="text" title="Filter texts">Texts</button>
-          <button class="button is-info js-filter" data-type="page" title="Filter pages">Pages</button>
+        <div class="navbar is-fixed-top">
+            <div class="is-pulled-left">
+              <input class="input is-small" id="js-search-text" type="text" placeholder="Search...">
+            </div>
+            <div class="is-pulled-right">
+              <button class="button is-info is-small js-filter" data-type="link" title="Filter links">🔗</button>
+              <button class="button is-info is-small js-filter" data-type="image" title="Filter images">🦊</button>
+              <button class="button is-info is-small js-filter" data-type="text" title="Filter texts">📋</button>
+              <button class="button is-info is-small js-filter" data-type="page" title="Filter pages">📄</button>
+            </div>
         </div>
         <div id="msg" class="is-hidden">
-          <div class="is-divider mb-s"></div>
           <div class="has-text-centered">No items to read.</div>
+          <div class="is-divider"></div>
         </div>
         <ul id="reading-list"></ul>
       </div>

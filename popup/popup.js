@@ -138,7 +138,7 @@ function onClickDelete(event, item) {
 function createItemElement(item) {
   const itemElement = document.createElement('li');
   itemElement.setAttribute('class', 'item');
-  itemElement.innerHTML = `<div class="is-divider"></div>${renderItem(item)}`;
+  itemElement.innerHTML = `${renderItem(item)}<div class="is-divider"></div>`;
   itemElement.onclick = (e) => onClickDelete(e, item);
   return itemElement;
 }
@@ -180,7 +180,18 @@ const list = {
   prependAllItems(items, filters) {
     Object.values(items).forEach((item) => this.prependItem(item, filters));
   },
+
+  filterAndRender(filters) {
+    const filterFn = (item) => filters[item.type] && filters.searchFn(item);
+
+    return browser.storage.local.get()
+      .then(({ items }) => Object.values(items)
+        .filter(filterFn)
+        .reduce((itemsAcc, item) => ({ ...itemsAcc, [item.id]: item }), {}))
+      .then((filteredItems) => list.render({ items: filteredItems }));
+  },
 };
+
 
 browser.storage.local.get().then((data) => {
   list.render(data);
@@ -198,16 +209,7 @@ browser.storage.local.get().then((data) => {
 
       filters[currentType] = !filters[currentType];
 
-      browser.storage.local.get().then(({ items }) => {
-        const filteredItems = Object.values(items)
-          .filter(({ type }) => filters[type])
-          .reduce((itemsAcc, item) => ({
-            ...itemsAcc,
-            [item.id]: item,
-          }), {});
-
-        list.render({ items: filteredItems });
-      });
+      list.filterAndRender(filters);
     });
 
     return {
@@ -215,6 +217,41 @@ browser.storage.local.get().then((data) => {
       [filterElement.getAttribute('data-type')]: true,
     };
   }, {});
+
+  filters.searchFn = () => true;
+
+  const searchTextInputElement = document.getElementById('js-search-text');
+
+  searchTextInputElement.addEventListener('keyup', (event) => {
+    const isEscKey = event.keyCode === 27;
+    if (isEscKey) {
+      searchTextInputElement.value = '';
+    }
+
+    const query = searchTextInputElement.value.trim();
+    const queryRegex = new RegExp(query, 'i');
+
+    // eslint-disable-next-line object-curly-newline
+    filters.searchFn = ({ type, link, text, page }) => {
+      const matchesPage = queryRegex.test(page.title) || queryRegex.test(page.metas.description);
+      if (matchesPage) {
+        return true;
+      }
+
+      switch (type) {
+        case 'link':
+          return queryRegex.test(link.text);
+
+        case 'text':
+          return queryRegex.test(text.selection);
+
+        default:
+          return false;
+      }
+    };
+
+    list.filterAndRender(filters);
+  });
 
   browser.runtime.onMessage.addListener((msg) => {
     const { action, item, items } = msg;

@@ -11,23 +11,18 @@
   margin: 0;
 }
 
+.navbar {
+  border-bottom: .1rem solid #dbdbdb;
+  padding: 0.7rem;
+}
+
 .is-divider {
   display: block;
   position: relative;
-  border-top: .1rem solid
-  #dbdbdb;
+  border-top: .1rem solid #dbdbdb;
   height: .1rem;
   margin: 0.7rem 0;
   text-align: center;
-}
-
-.buttons {
-  margin-top: 0.5rem;
-}
-
-.buttons .button {
-  font-size: 0.85em;
-  margin: 0;
 }
 
 .mb-s {
@@ -47,6 +42,9 @@
 }
 .mt-xs {
   margin-top: 0.2rem !important;
+}
+.mt-s {
+  margin-top: 0.7rem !important;
 }
 
 h1.page-title {

@@ -27,16 +27,16 @@ class ItemsManager {
 
   static buildNewItem(info, tab, type) {
     const {
-      title,
-      url,
-      favIconUrl,
+      title = '',
+      url = '',
+      favIconUrl = '',
     } = tab;
     const {
-      linkText,
-      linkUrl,
-      mediaType,
-      srcUrl,
-      selectionText,
+      linkText = '',
+      linkUrl = '',
+      mediaType = '',
+      srcUrl = '',
+      selectionText = '',
     } = info;
 
     const item = {

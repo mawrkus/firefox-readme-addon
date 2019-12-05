@@ -18,7 +18,11 @@ Soon ;)
 
 ## TODOs
 
+- Bug: delete item with filter activated -> if empty list -> "No items to read."
+- Bug: storage should be sync between popup and sidebar
+
+- React
+- Filter buttons -> add counts
+- Visit page -> scroll to pos where saved item is
 - Edit link text?
-- Save offline?
 - Analytics?
-- Storage should be sync between popup and sidebar
