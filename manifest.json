@@ -45,6 +45,7 @@
   "background": {
     "scripts": [
       "background/ItemsManager.js",
+      "background/MenusManager.js",
       "background/background.js"
     ]
   }

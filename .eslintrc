@@ -5,6 +5,7 @@
   },
   "globals": {
     "browser": "readonly",
-    "ItemsManager": "readonly"
+    "ItemsManager": "readonly",
+    "MenusManager": "readonly"
   }
 }
