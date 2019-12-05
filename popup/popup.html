@@ -8,8 +8,17 @@
   <body>
     <section>
       <div class="container">
+        <div class="buttons is-centered">
+          <button class="button is-info js-filter" data-type="link" title="Filter links">Links</button>
+          <button class="button is-info js-filter" data-type="image" title="Filter images">Images</button>
+          <button class="button is-info js-filter" data-type="text" title="Filter texts">Texts</button>
+          <button class="button is-info js-filter" data-type="page" title="Filter pages">Pages</button>
+        </div>
+        <div id="msg" class="is-hidden">
+          <div class="is-divider mb-s"></div>
+          <div class="has-text-centered">No items to read.</div>
+        </div>
         <ul id="reading-list"></ul>
-        <div id="msg" class="is-hidden">No items to read.</div>
       </div>
     </section>
     <script src="popup.js"></script>

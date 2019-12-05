@@ -21,6 +21,15 @@
   text-align: center;
 }
 
+.buttons {
+  margin-top: 0.5rem;
+}
+
+.buttons .button {
+  font-size: 0.85em;
+  margin: 0;
+}
+
 .mb-s {
   margin-bottom: 0.7rem !important;
 }
@@ -35,6 +44,9 @@
 }
 .ml-xs {
   margin-left: 0.2rem !important;
+}
+.mt-xs {
+  margin-top: 0.2rem !important;
 }
 
 h1.page-title {

@@ -30,7 +30,7 @@ function renderLink(item) {
     <div class="container">
       ${renderItemHeader(item)}
       <div class="content ml-xs">
-        <small class="ml-xs mr-xs">🔗</small> <a href="${link.url}" target="_blank" title="${link.url}">${link.text || link.url}</a>
+        <small>🔗</small> <a href="${link.url}" target="_blank" title="${link.url}">${link.text || link.url}</a>
       </div>
     </div>
   `;
@@ -138,7 +138,7 @@ function onClickDelete(event, item) {
 function createItemElement(item) {
   const itemElement = document.createElement('li');
   itemElement.setAttribute('class', 'item');
-  itemElement.innerHTML = `${renderItem(item)}<div class="is-divider" />`;
+  itemElement.innerHTML = `<div class="is-divider"></div>${renderItem(item)}`;
   itemElement.onclick = (e) => onClickDelete(e, item);
   return itemElement;
 }
@@ -169,23 +169,59 @@ const list = {
     });
   },
 
-  prependItem(item) {
+  prependItem(item, filters) {
+    if (!filters[item.type]) {
+      return;
+    }
     this.listElement.prepend(createItemElement(item));
     this.msgElement.classList.add('is-hidden');
   },
 
-  prependAllItems(items) {
-    Object.values(items).forEach((item) => this.prependItem(item));
+  prependAllItems(items, filters) {
+    Object.values(items).forEach((item) => this.prependItem(item, filters));
   },
 };
 
 browser.storage.local.get().then((data) => {
   list.render(data);
 
+  const filterElements = Array.from(document.querySelectorAll('.js-filter'));
+
+  const filters = filterElements.reduce((filtersAcc, filterElement) => {
+    filterElement.addEventListener('click', (event) => {
+      event.preventDefault();
+
+      const { target: currentElement } = event;
+      const currentType = currentElement.getAttribute('data-type');
+
+      currentElement.classList.toggle('is-info');
+
+      filters[currentType] = !filters[currentType];
+
+      browser.storage.local.get().then(({ items }) => {
+        const filteredItems = Object.values(items)
+          .filter(({ type }) => filters[type])
+          .reduce((itemsAcc, item) => ({
+            ...itemsAcc,
+            [item.id]: item,
+          }), {});
+
+        list.render({ items: filteredItems });
+      });
+    });
+
+    return {
+      ...filtersAcc,
+      [filterElement.getAttribute('data-type')]: true,
+    };
+  }, {});
+
   browser.runtime.onMessage.addListener((msg) => {
-    switch (msg.action) {
+    const { action, item, items } = msg;
+
+    switch (action) {
       case 'add-item':
-        list.prependItem(msg.item);
+        list.prependItem(item, filters);
         break;
 
       case 'clear-all-items':
@@ -193,7 +229,7 @@ browser.storage.local.get().then((data) => {
         break;
 
       case 'add-all-items':
-        list.prependAllItems(msg.items);
+        list.prependAllItems(items, filters);
         break;
 
       default:
