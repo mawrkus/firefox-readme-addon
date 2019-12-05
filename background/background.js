@@ -72,6 +72,17 @@ function createMenus(itemsManager, itemsCount) {
   });
 
   createMenu({
+    id: 'readme-add-page',
+    title: browser.i18n.getMessage('addPage'),
+    contexts: [
+      'page',
+    ],
+    onclick(info, tab) {
+      itemsManager.addItem(info, tab, 'page');
+    },
+  });
+
+  createMenu({
     id: 'readme-sep1',
     type: 'separator',
     contexts: [

@@ -18,7 +18,7 @@ function renderItemHeader(item) {
         </div>
       </div>
       <div class="media-right">
-        <button class="delete js-delete"></button>
+        <button class="delete is-small js-delete" title="Remove"></button>
       </div>
     </article>
   `;
@@ -30,7 +30,7 @@ function renderLink(item) {
     <div class="container">
       ${renderItemHeader(item)}
       <div class="content ml-xs">
-        <a href="${link.url}" target="_blank" title="${link.url}">${link.text || link.url}</a>
+        <small class="ml-xs mr-xs">🔗</small> <a href="${link.url}" target="_blank" title="${link.url}">${link.text || link.url}</a>
       </div>
     </div>
   `;
@@ -64,6 +64,18 @@ function renderText(item) {
   `;
 }
 
+function renderPage(item) {
+  const { page } = item;
+  return `
+    <div class="container">
+      ${renderItemHeader(item)}
+      <div class="content ml-xs">
+        <em title="Description of page ${page.url}">${page.metas.description}</em>
+      </div>
+    </div>
+  `;
+}
+
 function renderUnknownItemType(item) {
   return `
     <div class="container">
@@ -76,19 +88,22 @@ function renderUnknownItemType(item) {
 }
 
 function renderItem(item) {
-  const { type } = item;
+  switch (item.type) {
+    case 'link':
+      return renderLink(item);
 
-  if (type === 'link') {
-    return renderLink(item);
-  }
-  if (type === 'image') {
-    return renderImage(item);
-  }
-  if (type === 'text') {
-    return renderText(item);
-  }
+    case 'image':
+      return renderImage(item);
 
-  return renderUnknownItemType(item);
+    case 'text':
+      return renderText(item);
+
+    case 'page':
+      return renderPage(item);
+
+    default:
+      return renderUnknownItemType(item);
+  }
 }
 
 function sortItems(items) {

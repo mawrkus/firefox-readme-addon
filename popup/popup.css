@@ -30,6 +30,9 @@
 .mb-0 {
   margin-bottom: 0 !important;
 }
+.mr-xs {
+  margin-right: 0.2rem !important;
+}
 .ml-xs {
   margin-left: 0.2rem !important;
 }

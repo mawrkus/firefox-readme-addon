@@ -14,6 +14,9 @@
   "addAllImages": {
     "message": "🦊 Add all page images"
   },
+  "addPage": {
+    "message": "📄 Add page"
+  },
   "clearAll": {
     "message": "💥 Clear all!"
   }

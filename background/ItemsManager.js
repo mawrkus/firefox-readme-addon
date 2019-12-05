@@ -19,7 +19,8 @@ class ItemsManager {
 
     const item = ItemsManager.buildNewItem(info, tab, type);
 
-    return this.storeItem(item)
+    return this.executeScriptInTab(tab, 'page')
+      .then(([metas]) => this.storeItem({ ...item, page: { ...item.page, metas } }))
       .then((newItem) => this.onStoreItemSuccess(newItem))
       .catch((e) => this.onStoreItemError(e, item));
   }
@@ -166,6 +167,9 @@ class ItemsManager {
       case 'image':
         return ItemsManager.buildQueryImagesCode();
 
+      case 'page':
+        return ItemsManager.buildQueryMetasCode();
+
       default:
         console.warn('Unknown query code type "%s"!', type);
         return '';
@@ -196,17 +200,28 @@ class ItemsManager {
     `;
   }
 
+  static buildQueryMetasCode() {
+    return `
+      (() => {
+        const itemElement = document.querySelector('meta[name="description"]');
+        return {
+          description: itemElement.getAttribute('content'),
+        };
+      })();
+    `;
+  }
+
   storeAllItems(allItems) {
     return this.storage.get()
       .then(({ lastId, items }) => {
         const allNewItems = allItems.reduce((acc, newItem, i) => ({
           ...acc,
           [lastId + i]: { ...newItem, id: lastId + i },
-        }), items);
+        }), {});
 
         return this.storage.set({
-          items: allNewItems,
-          lastId: lastId + allNewItems.length,
+          items: { ...items, ...allNewItems },
+          lastId: lastId + allItems.length,
         })
           .then(() => allNewItems);
       });
