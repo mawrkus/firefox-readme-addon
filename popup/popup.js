@@ -170,7 +170,7 @@ const list = {
   },
 
   prependItem(item, filters) {
-    if (!filters[item.type]) {
+    if (!(filters[item.type] && filters.searchFn(item))) {
       return;
     }
     this.listElement.prepend(createItemElement(item));
@@ -178,7 +178,11 @@ const list = {
   },
 
   prependAllItems(items, filters) {
-    Object.values(items).forEach((item) => this.prependItem(item, filters));
+    const filterFn = (item) => filters[item.type] && filters.searchFn(item);
+
+    Object.values(items)
+      .filter(filterFn)
+      .forEach((item) => this.prependItem(item, filters));
   },
 
   filterAndRender(filters) {

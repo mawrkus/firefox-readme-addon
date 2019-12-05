@@ -45,6 +45,9 @@ class ItemsManager {
         title,
         url,
         iconUrl: favIconUrl,
+        metas: {
+          description: '',
+        },
       },
       link: {
         text: linkText,
