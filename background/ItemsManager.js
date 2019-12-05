@@ -203,9 +203,10 @@ class ItemsManager {
   static buildQueryMetasCode() {
     return `
       (() => {
-        const itemElement = document.querySelector('meta[name="description"]');
+        const itemElement = document.querySelector('meta[name="description"]')
+          || document.querySelector('meta[name="twitter:description"]');
         return {
-          description: itemElement.getAttribute('content'),
+          description: itemElement ? itemElement.getAttribute('content') : '',
         };
       })();
     `;
