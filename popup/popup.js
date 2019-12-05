@@ -106,10 +106,6 @@ function renderItem(item) {
   }
 }
 
-function sortItems(items) {
-  return items.sort((i1, i2) => i2.createdOn - i1.createdOn);
-}
-
 function onClickDelete(event, item) {
   const deleteElement = event.target;
   if (!deleteElement.classList.contains('js-delete')) {
@@ -143,8 +139,6 @@ function createItemElement(item) {
   return itemElement;
 }
 
-console.log('Initializing popup script...');
-
 const list = {
   listElement: document.getElementById('reading-list'),
   msgElement: document.getElementById('msg'),
@@ -162,8 +156,12 @@ const list = {
     }
   },
 
+  sortItems(items) {
+    return items.sort((i1, i2) => i2.createdOn - i1.createdOn);
+  },
+
   renderItems(items) {
-    sortItems(items).forEach((item) => {
+    this.sortItems(items).forEach((item) => {
       const itemElement = createItemElement(item);
       this.listElement.appendChild(itemElement);
     });
@@ -196,6 +194,7 @@ const list = {
   },
 };
 
+console.log('Initializing popup script...');
 
 browser.storage.local.get().then((data) => {
   list.render(data);
